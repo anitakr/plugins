@@ -51,6 +51,7 @@ public final class CameraPlugin implements FlutterPlugin, ActivityAware {
 
   @Override
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
+    System.out.println("KKKKKKKKKK");
     maybeStartListening(
         binding.getActivity(),
         flutterPluginBinding.getBinaryMessenger(),
