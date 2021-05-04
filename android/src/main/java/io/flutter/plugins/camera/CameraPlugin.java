@@ -1,4 +1,6 @@
-
+// Copyright 2013 The Flutter Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
 
 package io.flutter.plugins.camera;
 
@@ -12,10 +14,18 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugins.camera.CameraPermissions.PermissionsRegistry;
 import io.flutter.view.TextureRegistry;
-import io.flutter.embedding.android.FlutterActivity;
 
+/**
+ * Platform implementation of the camera_plugin.
+ *
+ * <p>Instantiate this in an add to app scenario to gracefully handle activity and context changes.
+ * See {@code io.flutter.plugins.camera.MainActivity} for an example.
+ *
+ * <p>Call {@link #registerWith(io.flutter.plugin.common.PluginRegistry.Registrar)} to register an
+ * implementation of this that uses the stable {@code io.flutter.plugin.common} package.
+ */
+public final class CameraPlugin implements FlutterPlugin, ActivityAware {
 
-public final class CameraPlugin extends FlutterActivity {
   private static final String TAG = "CameraPlugin";
   private @Nullable FlutterPluginBinding flutterPluginBinding;
   private @Nullable MethodCallHandlerImpl methodCallHandler;
@@ -27,22 +37,7 @@ public final class CameraPlugin extends FlutterActivity {
    */
   public CameraPlugin() {}
 
-  /**
-   * Registers a plugin implementation that uses the stable {@code io.flutter.plugin.common}
-   * package.
-   *
-   * <p>Calling this automatically initializes the plugin. However plugins initialized this way
-   * won't react to changes in activity or context, unlike {@link CameraPlugin}.
-   */
-  @SuppressWarnings("deprecation")
-  public static void registerWith(io.flutter.plugin.common.PluginRegistry.Registrar registrar) {
-    CameraPlugin plugin = new CameraPlugin();
-    plugin.maybeStartListening(
-        registrar.activity(),
-        registrar.messenger(),
-        registrar::addRequestPermissionsResultListener,
-        registrar.view());
-  }
+  
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
