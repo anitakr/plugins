@@ -36,7 +36,7 @@ import io.flutter.view.TextureRegistry;
 import io.flutter.embedding.android.FlutterActivity;
 
 
-public final class CameraPlugin implements FlutterActivity {
+public final class CameraPlugin extends FlutterActivity {
   private static final String TAG = "CameraPlugin";
   private @Nullable FlutterPluginBinding flutterPluginBinding;
   private @Nullable MethodCallHandlerImpl methodCallHandler;
