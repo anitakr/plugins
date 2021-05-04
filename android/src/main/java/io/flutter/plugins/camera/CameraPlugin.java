@@ -14,6 +14,10 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugins.camera.CameraPermissions.PermissionsRegistry;
 import io.flutter.view.TextureRegistry;
+import io.flutter.embedding.android.FlutterActivity;
+import io.flutter.embedding.engine.FlutterEngine;
+import io.flutter.plugins.firebase.core.FirebaseCorePlugin;
+
 
 /**
  * Platform implementation of the camera_plugin.
@@ -24,7 +28,7 @@ import io.flutter.view.TextureRegistry;
  * <p>Call {@link #registerWith(io.flutter.plugin.common.PluginRegistry.Registrar)} to register an
  * implementation of this that uses the stable {@code io.flutter.plugin.common} package.
  */
-public final class CameraPlugin implements FlutterPlugin, ActivityAware {
+public final class CameraPlugin extends FlutterActivity {
 
   private static final String TAG = "CameraPlugin";
   private @Nullable FlutterPluginBinding flutterPluginBinding;
