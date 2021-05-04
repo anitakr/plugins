@@ -39,25 +39,14 @@ public final class CameraPlugin extends FlutterActivity {
    */
   public CameraPlugin() {}
 
-  /**
-   * Registers a plugin implementation that uses the stable {@code io.flutter.plugin.common}
-   * package.
-   *
-   * <p>Calling this automatically initializes the plugin. However plugins initialized this way
-   * won't react to changes in activity or context, unlike {@link CameraPlugin}.
-   */
-  @SuppressWarnings("deprecation")
-  public static void registerWith(io.flutter.plugin.common.PluginRegistry.Registrar registrar) {
-    CameraPlugin plugin = new CameraPlugin();
+  @Override
+  public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
+     CameraPlugin plugin = new CameraPlugin();
     plugin.maybeStartListening(
         registrar.activity(),
         registrar.messenger(),
         registrar::addRequestPermissionsResultListener,
         registrar.view());
-  }
-
-  @Override
-  public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
     this.flutterPluginBinding = binding;
   }
 
