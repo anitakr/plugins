@@ -29,6 +29,9 @@ public final class CameraPlugin implements FlutterPlugin, ActivityAware {
   private static final String TAG = "CameraPlugin";
   private @Nullable FlutterPluginBinding flutterPluginBinding;
   private @Nullable MethodCallHandlerImpl methodCallHandler;
+  private TextureRegistry textureRegistry;
+  private Context applicationContext;
+  private MethodChannel channel;
 
   /**
    * Initialize this within the {@code #configureFlutterEngine} of a Flutter activity or fragment.
@@ -49,14 +52,20 @@ public final class CameraPlugin implements FlutterPlugin, ActivityAware {
     this.flutterPluginBinding = null;
   }
 
-  @Override
-  public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
-    System.out.println("KKKKKKKKKK");
-    maybeStartListening(
-        binding.getActivity(),
-        flutterPluginBinding.getBinaryMessenger(),
-        binding::addRequestPermissionsResultListener,
-        flutterPluginBinding.getTextureRegistry());
+ @Override
+  public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+    this.onAttachedToEngine(
+            flutterPluginBinding.getApplicationContext(),
+            flutterPluginBinding.getBinaryMessenger(),
+            flutterPluginBinding.getTextureRegistry()
+    );
+  }
+ private void onAttachedToEngine(Context applicationContext, BinaryMessenger messenger, TextureRegistry textureRegistry) {
+    this.applicationContext = applicationContext;
+    cameraPermissions = new CameraPermissions();
+    channel = new MethodChannel(messenger, "CameraPlugin");
+    channel.setMethodCallHandler(this);
+    this.textureRegistry = textureRegistry;
   }
 
   @Override
