@@ -17,6 +17,24 @@ import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugins.firebase.core.FirebaseCorePlugin;
 
 
+// Copyright 2013 The Flutter Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+package io.flutter.plugins.camera;
+
+import android.app.Activity;
+import android.os.Build;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
+import io.flutter.plugin.common.BinaryMessenger;
+import io.flutter.plugins.camera.CameraPermissions.PermissionsRegistry;
+import io.flutter.view.TextureRegistry;
+import io.flutter.embedding.android.FlutterActivity;
+
 /**
  * Platform implementation of the camera_plugin.
  *
@@ -26,9 +44,9 @@ import io.flutter.plugins.firebase.core.FirebaseCorePlugin;
  * <p>Call {@link #registerWith(io.flutter.plugin.common.PluginRegistry.Registrar)} to register an
  * implementation of this that uses the stable {@code io.flutter.plugin.common} package.
  */
-public final class CameraPlugin extends FlutterActivity {
-
+public final class CameraPlugin implements FlutterActivity {
   private static final String TAG = "CameraPlugin";
+  private @Nullable FlutterPluginBinding flutterPluginBinding;
   private @Nullable MethodCallHandlerImpl methodCallHandler;
 
   /**
@@ -55,12 +73,23 @@ public final class CameraPlugin extends FlutterActivity {
         registrar.view());
   }
 
+  @Override
+  public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
+    this.flutterPluginBinding = binding;
+  }
+
+  @Override
+  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+    this.flutterPluginBinding = null;
+  }
 
   @Override
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
     maybeStartListening(
         binding.getActivity(),
-        binding::addRequestPermissionsResultListener);
+        flutterPluginBinding.getBinaryMessenger(),
+        binding::addRequestPermissionsResultListener,
+        flutterPluginBinding.getTextureRegistry());
   }
 
   @Override
@@ -86,7 +115,9 @@ public final class CameraPlugin extends FlutterActivity {
 
   private void maybeStartListening(
       Activity activity,
-      PermissionsRegistry permissionsRegistry) {
+      BinaryMessenger messenger,
+      PermissionsRegistry permissionsRegistry,
+      TextureRegistry textureRegistry) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
       // If the sdk is less than 21 (min sdk for Camera2) we don't register the plugin.
       return;
@@ -94,6 +125,6 @@ public final class CameraPlugin extends FlutterActivity {
 
     methodCallHandler =
         new MethodCallHandlerImpl(
-            activity, messenger, new CameraPermissions(), permissionsRegistry, null);
+            activity, messenger, new CameraPermissions(), permissionsRegistry, textureRegistry);
   }
 }
