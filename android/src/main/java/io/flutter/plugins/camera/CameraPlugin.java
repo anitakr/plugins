@@ -35,15 +35,7 @@ import io.flutter.plugins.camera.CameraPermissions.PermissionsRegistry;
 import io.flutter.view.TextureRegistry;
 import io.flutter.embedding.android.FlutterActivity;
 
-/**
- * Platform implementation of the camera_plugin.
- *
- * <p>Instantiate this in an add to app scenario to gracefully handle activity and context changes.
- * See {@code io.flutter.plugins.camera.MainActivity} for an example.
- *
- * <p>Call {@link #registerWith(io.flutter.plugin.common.PluginRegistry.Registrar)} to register an
- * implementation of this that uses the stable {@code io.flutter.plugin.common} package.
- */
+
 public final class CameraPlugin implements FlutterActivity {
   private static final String TAG = "CameraPlugin";
   private @Nullable FlutterPluginBinding flutterPluginBinding;
