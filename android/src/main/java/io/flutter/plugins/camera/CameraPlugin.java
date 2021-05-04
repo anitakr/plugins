@@ -26,7 +26,7 @@ import io.flutter.plugins.firebase.core.FirebaseCorePlugin;
  * <p>Call {@link #registerWith(io.flutter.plugin.common.PluginRegistry.Registrar)} to register an
  * implementation of this that uses the stable {@code io.flutter.plugin.common} package.
  */
-public final class CameraPlugin implements FlutterActivity {
+public final class CameraPlugin extends FlutterActivity {
 
   private static final String TAG = "CameraPlugin";
   private @Nullable FlutterPluginBinding flutterPluginBinding;
